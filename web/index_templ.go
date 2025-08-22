@@ -112,7 +112,7 @@ func base(title string, body templ.Component, impressum *config.Impressum, chall
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "<style>\n        body,\n        html {\n            height: 100%;\n            display: flex;\n            justify-content: center;\n            align-items: center;\n            margin-left: auto;\n            margin-right: auto;\n        }\n\n        .centered-div {\n            text-align: center;\n        }\n\n        #status {\n            font-variant-numeric: tabular-nums;\n        }\n\n        #progress {\n          display: none;\n          width: 90%;\n          width: min(20rem, 90%);\n          height: 2rem;\n          border-radius: 1rem;\n          overflow: hidden;\n          margin: 1rem 0 2rem;\n\t\t\t\t\toutline-offset: 2px;\n\t\t\t\t\toutline: #b16286 solid 4px;\n\t\t\t\t}\n\n        .bar-inner {\n            background-color: #b16286;\n            height: 100%;\n            width: 0;\n            transition: width 0.25s ease-in;\n        }\n    \t</style>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "<style>\r\n        body,\r\n        html {\r\n            height: 100%;\r\n            display: flex;\r\n            justify-content: center;\r\n            align-items: center;\r\n            margin-left: auto;\r\n            margin-right: auto;\r\n        }\r\n\r\n        .centered-div {\r\n            text-align: center;\r\n        }\r\n\r\n        #status {\r\n            font-variant-numeric: tabular-nums;\r\n        }\r\n\r\n        #progress {\r\n          display: none;\r\n          width: 90%;\r\n          width: min(20rem, 90%);\r\n          height: 2rem;\r\n          border-radius: 1rem;\r\n          overflow: hidden;\r\n          margin: 1rem 0 2rem;\r\n\t\t\t\t\toutline-offset: 2px;\r\n\t\t\t\t\toutline: #b16286 solid 4px;\r\n\t\t\t\t}\r\n\r\n        .bar-inner {\r\n            background-color: #b16286;\r\n            height: 100%;\r\n            width: 0;\r\n            transition: width 0.25s ease-in;\r\n        }\r\n    \t</style>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -595,14 +595,14 @@ func bench(localizer *localization.SimpleLocalizer) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 45, "</p><script async type=\"module\" src=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 45, "</p><script async src=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var36 string
-		templ_7745c5c3_Var36, templ_7745c5c3_Err = templ.JoinStringErrs(anubis.BasePrefix + "/.within.website/x/cmd/anubis/static/js/bench.mjs?cacheBuster=" + anubis.Version)
+		templ_7745c5c3_Var36, templ_7745c5c3_Err = templ.JoinStringErrs(anubis.BasePrefix + "/.within.website/x/cmd/anubis/static/js/bench.js?cacheBuster=" + anubis.Version)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `index.templ`, Line: 144, Col: 138}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `index.templ`, Line: 144, Col: 123}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var36))
 		if templ_7745c5c3_Err != nil {

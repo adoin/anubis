@@ -4,7 +4,7 @@ export default function process(
   difficulty = 5,
   signal = null,
   progressCallback = null,
-  threads = Math.max(navigator.hardwareConcurrency / 2, 1),
+  threads = Math.max((navigator.hardwareConcurrency || 0) / 2, 1),
 ) {
   console.debug("fast algo");
 
@@ -16,7 +16,7 @@ export default function process(
   }
 
   return new Promise((resolve, reject) => {
-    let webWorkerURL = `${basePrefix}/.within.website/x/cmd/anubis/static/js/worker/sha256-${workerMethod}.mjs?cacheBuster=${version}`;
+    let webWorkerURL = `${basePrefix}/.within.website/x/cmd/anubis/static/js/worker/sha256-${workerMethod}.js?cacheBuster=${version}`;
 
     console.log(webWorkerURL);
 

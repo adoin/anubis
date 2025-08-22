@@ -15,8 +15,9 @@ node_modules
 # MacOS
 .DS_store
 
-# Intellij
+# IDE
 .idea
+.cursor
 
 # how does this get here
 doc/VERSION

@@ -141,7 +141,7 @@ templ bench(localizer *localization.SimpleLocalizer) {
 		<div class="centered-div">
 			<img id="image" style="width:100%;max-width:256px;" src={ anubis.BasePrefix + "/.within.website/x/cmd/anubis/static/img/pensive.webp?cacheBuster=" + anubis.Version }/>
 			<p id="status" style="max-width:256px">{ localizer.T("loading") }</p>
-			<script async type="module" src={ anubis.BasePrefix + "/.within.website/x/cmd/anubis/static/js/bench.mjs?cacheBuster=" + anubis.Version }></script>
+			<script async src={ anubis.BasePrefix + "/.within.website/x/cmd/anubis/static/js/bench.js?cacheBuster=" + anubis.Version }></script>
 			<div id="sparkline"></div>
 			<noscript>
 				<p>{ localizer.T("benchmark_requires_js") }</p>
