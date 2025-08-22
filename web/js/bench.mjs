@@ -1,3 +1,66 @@
+// AbortController polyfill for older Android WebView versions
+if (typeof AbortController === 'undefined') {
+  // DOMException polyfill for older browsers
+  if (typeof DOMException === 'undefined') {
+    window.DOMException = class DOMException extends Error {
+      constructor(message, name) {
+        super(message);
+        this.name = name;
+        this.message = message;
+      }
+    };
+  }
+  
+  window.AbortSignal = class AbortSignal {
+    constructor() {
+      this.aborted = false;
+      this.onabort = null;
+      this._listeners = [];
+    }
+    
+    addEventListener(type, listener, options = {}) {
+      if (type === 'abort') {
+        this._listeners.push({ listener, once: options.once || false });
+      }
+    }
+    
+    removeEventListener(type, listener) {
+      if (type === 'abort') {
+        this._listeners = this._listeners.filter(item => item.listener !== listener);
+      }
+    }
+    
+    _triggerAbort() {
+      this.aborted = true;
+      if (this.onabort) {
+        this.onabort();
+      }
+      
+      // Trigger all listeners
+      const listenersToCall = [...this._listeners];
+      this._listeners = this._listeners.filter(item => !item.once);
+      
+      listenersToCall.forEach(item => {
+        try {
+          item.listener();
+        } catch (e) {
+          console.error('Error in abort listener:', e);
+        }
+      });
+    }
+  };
+  
+  window.AbortController = class AbortController {
+    constructor() {
+      this.signal = new AbortSignal();
+    }
+    
+    abort() {
+      this.signal._triggerAbort();
+    }
+  };
+}
+
 import algorithms from "./algorithms/index.mjs";
 
 const defaultDifficulty = 4;
