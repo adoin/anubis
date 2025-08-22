@@ -45,7 +45,8 @@ async function getChallengePage(lang) {
     resultSheet[lang] = page.includes(`<html lang="${lang}">`)
   }
 
-  for (const [lang, result] of Object.entries(resultSheet)) {
+  for (const lang of Object.keys(resultSheet)) {
+    const result = resultSheet[lang];
     if (!result) {
       failed = true;
       console.log(`${lang} did not show up in challenge page`);

@@ -3,7 +3,11 @@ import algorithms from "./algorithms/index.mjs";
 // from Xeact
 const u = (url = "", params = {}) => {
   let result = new URL(url, window.location.href);
-  Object.entries(params).forEach(([k, v]) => result.searchParams.set(k, v));
+  for (const key in params) {
+    if (params.hasOwnProperty(key)) {
+      result.searchParams.set(key, params[key]);
+    }
+  }
   return result.toString();
 };
 
