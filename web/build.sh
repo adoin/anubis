@@ -12,12 +12,8 @@ for file in js/*.mjs js/worker/*.mjs; do
   # Convert .mjs extension to .js for output
   output_file=$(echo "${file}" | sed 's/\.mjs$/.js/')
   
-  # Add external dependency for sha256-purejs.mjs
-  if [[ "${file}" == "js/worker/sha256-purejs.mjs" ]]; then
-    esbuild "${file}" --sourcemap --target=es2015 --format=cjs --bundle --minify --outfile=static/"${output_file}" --external:@aws-crypto/sha256-js
-  else
-    esbuild "${file}" --sourcemap --target=es2015 --format=cjs --bundle --minify --outfile=static/"${output_file}"
-  fi
+  # Bundle all dependencies (including @aws-crypto/sha256-js for purejs worker)
+  esbuild "${file}" --sourcemap --target=es2015 --format=cjs --bundle --minify --outfile=static/"${output_file}"
   
   gzip -f -k -n static/${output_file}
   zstd -f -k --ultra -22 static/${output_file}
