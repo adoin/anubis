@@ -22,8 +22,8 @@ else
 endif
 
 build: assets
-	$(GO) build -o ./var/anubis ./cmd/anubis
-	$(GO) build -o ./var/robots2policy ./cmd/robots2policy
+	CGO_ENABLED=0 $(GO) build -o ./var/anubis -ldflags '-extldflags "-static"' ./cmd/anubis
+	CGO_ENABLED=0 $(GO) build -o ./var/robots2policy -ldflags '-extldflags "-static"' ./cmd/robots2policy
 	@echo "Anubis is now built to ./var/anubis"
 
 lint: assets
