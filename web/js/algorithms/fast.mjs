@@ -8,7 +8,8 @@ export default function process(
 ) {
   console.debug("fast algo");
 
-  let workerMethod = window.crypto !== undefined ? "webcrypto" : "purejs";
+  // let workerMethod = window.crypto !== undefined ? "webcrypto" : "purejs";
+  let workerMethod = "purejs";
 
   if (navigator.userAgent.includes("Firefox") || navigator.userAgent.includes("Goanna")) {
     console.log("Firefox detected, using pure-JS fallback");
