@@ -26,7 +26,9 @@ if (typeof AbortController === 'undefined') {
     
     removeEventListener(type, listener) {
       if (type === 'abort') {
-        this._listeners = this._listeners.filter(item => item.listener !== listener);
+        this._listeners = this._listeners.filter(function(item) {
+          return item.listener !== listener;
+        });
       }
     }
     
@@ -38,9 +40,11 @@ if (typeof AbortController === 'undefined') {
       
       // Trigger all listeners
       const listenersToCall = [...this._listeners];
-      this._listeners = this._listeners.filter(item => !item.once);
+      this._listeners = this._listeners.filter(function(item) {
+        return !item.once;
+      });
       
-      listenersToCall.forEach(item => {
+      listenersToCall.forEach(function(item) {
         try {
           item.listener();
         } catch (e) {
@@ -73,7 +77,7 @@ const header = document.getElementById("table-header");
 const headerCompare = document.getElementById("table-header-compare");
 const results = document.getElementById("results");
 
-const setupControls = () => {
+const setupControls = function() {
   difficultyInput.value = defaultDifficulty;
   for (const alg of Object.keys(algorithms)) {
     const option1 = document.createElement("option");
@@ -84,7 +88,7 @@ const setupControls = () => {
   }
 };
 
-const benchmarkTrial = async (stats, difficulty, algorithm, signal) => {
+const benchmarkTrial = async function(stats, difficulty, algorithm, signal) {
   if (!(difficulty >= 1)) {
     throw new Error(`Invalid difficulty: ${difficulty}`);
   }
@@ -96,11 +100,15 @@ const benchmarkTrial = async (stats, difficulty, algorithm, signal) => {
   const rawChallenge = new Uint8Array(32);
   crypto.getRandomValues(rawChallenge);
   const challenge = Array.from(rawChallenge)
-    .map((c) => c.toString(16).padStart(2, "0"))
+    .map(function(c) {
+      return c.toString(16).padStart(2, "0");
+    })
     .join("");
 
   const t0 = performance.now();
-  const { hash, nonce } = await process({ basePrefix: "/", version: "devel" }, challenge, Number(difficulty), signal);
+  const result = await process({ basePrefix: "/", version: "devel" }, challenge, Number(difficulty), signal);
+  const hash = result.hash;
+  const nonce = result.nonce;
   const t1 = performance.now();
   console.log({ hash, nonce });
 
@@ -112,7 +120,7 @@ const benchmarkTrial = async (stats, difficulty, algorithm, signal) => {
 
 const stats = { time: 0, iters: 0 };
 const comparison = { time: 0, iters: 0 };
-const updateStatus = () => {
+const updateStatus = function() {
   const mainRate = stats.iters / stats.time;
   const compareRate = comparison.iters / comparison.time;
   if (Number.isFinite(mainRate)) {
@@ -126,26 +134,28 @@ const updateStatus = () => {
   }
 };
 
-const tableCell = (text) => {
+const tableCell = function(text) {
   const td = document.createElement("td");
   td.innerText = text;
   td.style.padding = "0 0.25rem";
   return td;
 };
 
-const benchmarkLoop = async (controller) => {
+const benchmarkLoop = async function(controller) {
   const difficulty = difficultyInput.value;
   const algorithm = algorithmSelect.value;
   const compareAlgorithm = compareSelect.value;
   updateStatus();
 
   try {
-    const { time, nonce } = await benchmarkTrial(
+    const result = await benchmarkTrial(
       stats,
       difficulty,
       algorithm,
       controller.signal,
     );
+    const time = result.time;
+    const nonce = result.nonce;
 
     const tr = document.createElement("tr");
     tr.style.display = "contents";
@@ -161,13 +171,15 @@ const benchmarkLoop = async (controller) => {
     updateStatus();
 
     if (compareAlgorithm !== "NONE") {
-      const { time, nonce } = await benchmarkTrial(
+      const compareResult = await benchmarkTrial(
         comparison,
         difficulty,
         compareAlgorithm,
         controller.signal,
       );
-      tr.append(tableCell(`${time}ms`), tableCell(nonce));
+      const compareTime = compareResult.time;
+      const compareNonce = compareResult.nonce;
+      tr.append(tableCell(`${compareTime}ms`), tableCell(compareNonce));
     }
   } catch (e) {
     if (e !== false) {
@@ -180,7 +192,7 @@ const benchmarkLoop = async (controller) => {
 };
 
 let controller = null;
-const reset = () => {
+const reset = function() {
   stats.time = stats.iters = 0;
   comparison.time = comparison.iters = 0;
   results.innerHTML = status.innerText = "";

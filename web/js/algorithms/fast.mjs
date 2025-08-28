@@ -1,11 +1,13 @@
 export default function process(
-  { basePrefix, version },
+  config,
   data,
   difficulty = 5,
   signal = null,
   progressCallback = null,
   threads = Math.max((navigator.hardwareConcurrency || 0) / 2, 1),
 ) {
+  const basePrefix = config.basePrefix;
+  const version = config.version;
   console.debug("fast algo");
 
   // let workerMethod = window.crypto !== undefined ? "webcrypto" : "purejs";
@@ -16,7 +18,7 @@ export default function process(
     workerMethod = "purejs";
   }
 
-  return new Promise((resolve, reject) => {
+  return new Promise(function(resolve, reject) {
     let webWorkerURL = `${basePrefix}/.within.website/x/cmd/anubis/static/js/worker/sha256-${workerMethod}.js?cacheBuster=${version}`;
 
     console.log(webWorkerURL);
@@ -24,18 +26,20 @@ export default function process(
     const workers = [];
     let settled = false;
 
-    const cleanup = () => {
+    const cleanup = function() {
       if (settled) {
         return;
       }
       settled = true;
-      workers.forEach((w) => w.terminate());
+      workers.forEach(function(w) {
+        w.terminate();
+      });
       if (signal != null) {
         signal.removeEventListener("abort", onAbort);
       }
     };
 
-    const onAbort = () => {
+    const onAbort = function() {
       console.log("PoW aborted");
       cleanup();
       reject(new DOMException("Aborted", "AbortError"));
@@ -51,7 +55,7 @@ export default function process(
     for (let i = 0; i < threads; i++) {
       let worker = new Worker(webWorkerURL);
 
-      worker.onmessage = (event) => {
+      worker.onmessage = function(event) {
         if (typeof event.data === "number") {
           progressCallback?.(event.data);
         } else {
@@ -60,16 +64,16 @@ export default function process(
         }
       };
 
-      worker.onerror = (event) => {
+      worker.onerror = function(event) {
         cleanup();
         reject(event);
       };
 
       worker.postMessage({
-        data,
-        difficulty,
+        data: data,
+        difficulty: difficulty,
         nonce: i,
-        threads,
+        threads: threads,
       });
 
       workers.push(worker);

@@ -1,15 +1,20 @@
 const encoder = new TextEncoder();
-const calculateSHA256 = async (input) => {
+const calculateSHA256 = async function(input) {
   const data = encoder.encode(input);
   return await crypto.subtle.digest("SHA-256", data);
 };
 
-const toHexString = (byteArray) => {
-  return byteArray.reduce((str, byte) => str + byte.toString(16).padStart(2, "0"), "");
+const toHexString = function(byteArray) {
+  return byteArray.reduce(function(str, byte) {
+    return str + byte.toString(16).padStart(2, "0");
+  }, "");
 };
 
-addEventListener("message", async ({ data: eventData }) => {
-  const { data, difficulty, threads } = eventData;
+addEventListener("message", async function(event) {
+  const eventData = event.data;
+  const data = eventData.data;
+  const difficulty = eventData.difficulty;
+  const threads = eventData.threads;
   let nonce = eventData.nonce;
   const isMainThread = nonce === 0;
   let iterations = 0;
@@ -37,12 +42,12 @@ addEventListener("message", async ({ data: eventData }) => {
 
     if (isValid) {
       const finalHash = toHexString(hashArray);
-      postMessage({
-        hash: finalHash,
-        data,
-        difficulty,
-        nonce,
-      });
+          postMessage({
+      hash: finalHash,
+      data: data,
+      difficulty: difficulty,
+      nonce: nonce,
+    });
       return; // Exit worker
     }
 

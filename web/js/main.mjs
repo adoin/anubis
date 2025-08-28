@@ -1,7 +1,7 @@
 import algorithms from "./algorithms/index.mjs";
 
 // from Xeact
-const u = (url = "", params = {}) => {
+const u = function(url = "", params = {}) {
   let result = new URL(url, window.location.href);
   for (const key in params) {
     if (params.hasOwnProperty(key)) {
@@ -11,13 +11,14 @@ const u = (url = "", params = {}) => {
   return result.toString();
 };
 
-const imageURL = (mood, cacheBuster, basePrefix) =>
-  u(`${basePrefix}/.within.website/x/cmd/anubis/static/img/${mood}.webp`, {
+const imageURL = function(mood, cacheBuster, basePrefix) {
+  return u(`${basePrefix}/.within.website/x/cmd/anubis/static/img/${mood}.webp`, {
     cacheBuster,
   });
+};
 
 // Detect available languages by loading the manifest
-const getAvailableLanguages = async () => {
+const getAvailableLanguages = async function() {
   const basePrefix = JSON.parse(
     document.getElementById("anubis_base_prefix").textContent,
   );
@@ -37,11 +38,12 @@ const getAvailableLanguages = async () => {
 };
 
 // Use the browser language from the HTML lang attribute which is set by the server settings or request headers
-const getBrowserLanguage = async () =>
-  document.documentElement.lang;
+const getBrowserLanguage = async function() {
+  return document.documentElement.lang;
+};
 
 // Load translations from JSON files
-const loadTranslations = async (lang) => {
+const loadTranslations = async function(lang) {
   const basePrefix = JSON.parse(
     document.getElementById("anubis_base_prefix").textContent,
   );
@@ -61,14 +63,16 @@ let translations = {};
 let currentLang;
 
 // Initialize translations
-const initTranslations = async () => {
+const initTranslations = async function() {
   currentLang = await getBrowserLanguage();
   translations = await loadTranslations(currentLang);
 };
 
-const t = (key) => translations[`js_${key}`] || translations[key] || key;
+const t = function(key) {
+  return translations[`js_${key}`] || translations[key] || key;
+};
 
-(async () => {
+(async function() {
   // Initialize translations first
   await initTranslations();
 
@@ -98,14 +102,17 @@ const t = (key) => translations[`js_${key}`] || translations[key] || key;
   let userReadDetails = false;
 
   if (details) {
-    details.addEventListener("toggle", () => {
+    details.addEventListener("toggle", function() {
       if (details.open) {
         userReadDetails = true;
       }
     });
   }
 
-  const ohNoes = ({ titleMsg, statusMsg, imageSrc }) => {
+  const ohNoes = function(config) {
+    const titleMsg = config.titleMsg;
+    const statusMsg = config.statusMsg;
+    const imageSrc = config.imageSrc;
     title.innerHTML = titleMsg;
     status.innerHTML = statusMsg;
     image.src = imageSrc;
@@ -114,7 +121,11 @@ const t = (key) => translations[`js_${key}`] || translations[key] || key;
 
   status.innerHTML = t('calculating');
 
-  for (const { value, name, msg } of dependencies) {
+  for (let i = 0; i < dependencies.length; i++) {
+    const dependency = dependencies[i];
+    const value = dependency.value;
+    const name = dependency.name;
+    const msg = dependency.msg;
     if (!value) {
       ohNoes({
         titleMsg: `${t('missing_feature')} ${name}`,
@@ -125,9 +136,11 @@ const t = (key) => translations[`js_${key}`] || translations[key] || key;
     }
   }
 
-  const { challenge, rules } = JSON.parse(
+  const challengeData = JSON.parse(
     document.getElementById("anubis_challenge").textContent,
   );
+  const challenge = challengeData.challenge;
+  const rules = challengeData.rules;
 
   const process = algorithms[rules.algorithm];
   if (!process) {
@@ -154,12 +167,12 @@ const t = (key) => translations[`js_${key}`] || translations[key] || key;
 
   try {
     const t0 = Date.now();
-    const { hash, nonce } = await process(
+    const result = await process(
       { basePrefix, version: anubisVersion },
       challenge.randomData,
       rules.difficulty,
       null,
-      (iters) => {
+      function(iters) {
         const delta = Date.now() - t0;
         // only update the speed every second so it's less visually distracting
         if (delta - lastSpeedUpdate > 1000) {
@@ -186,6 +199,8 @@ const t = (key) => translations[`js_${key}`] || translations[key] || key;
         }
       },
     );
+    const hash = result.hash;
+    const nonce = result.nonce;
     const t1 = Date.now();
     console.log({ hash, nonce });
 
