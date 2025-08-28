@@ -1,5 +1,13 @@
 import algorithms from "./algorithms/index.mjs";
 
+if(!String.prototype.padStart) {
+  String.prototype.padStart = function(maxLength, fillString) {
+    if (this.length >= maxLength) {
+      return this;
+    }
+    return fillString.repeat(maxLength - this.length) + this;
+  };
+}
 // from Xeact
 const u = (url = "", params = {}) => {
   let result = new URL(url, window.location.href);
