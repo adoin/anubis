@@ -1,6 +1,6 @@
 import { Sha256 } from '@aws-crypto/sha256-js';
 
-const calculateSHA256 = function(text) {
+const calculateSHA256 = (text) => {
   const hash = new Sha256();
   hash.update(text);
   return hash.digest();
@@ -8,17 +8,12 @@ const calculateSHA256 = function(text) {
 
 function toHexString(arr) {
   return Array.from(arr)
-    .map(function(c) {
-      return c.toString(16).padStart(2, "0");
-    })
+    .map((c) => c.toString(16).padStart(2, "0"))
     .join("");
 }
 
-addEventListener('message', async function(event) {
-  const eventData = event.data;
-  const data = eventData.data;
-  const difficulty = eventData.difficulty;
-  const threads = eventData.threads;
+addEventListener('message', async ({ data: eventData }) => {
+  const { data, difficulty, threads } = eventData;
   let nonce = eventData.nonce;
   const isMainThread = nonce === 0;
   let iterations = 0;
@@ -48,9 +43,9 @@ addEventListener('message', async function(event) {
       const finalHash = toHexString(hashArray);
       postMessage({
         hash: finalHash,
-        data: data,
-        difficulty: difficulty,
-        nonce: nonce,
+        data,
+        difficulty,
+        nonce,
       });
       return; // Exit worker
     }

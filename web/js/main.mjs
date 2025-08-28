@@ -1,7 +1,7 @@
 import algorithms from "./algorithms/index.mjs";
 
 // from Xeact
-const u = function(url = "", params = {}) {
+const u = (url = "", params = {}) => {
   let result = new URL(url, window.location.href);
   for (const key in params) {
     if (params.hasOwnProperty(key)) {
@@ -11,14 +11,13 @@ const u = function(url = "", params = {}) {
   return result.toString();
 };
 
-const imageURL = function(mood, cacheBuster, basePrefix) {
-  return u(`${basePrefix}/.within.website/x/cmd/anubis/static/img/${mood}.webp`, {
+const imageURL = (mood, cacheBuster, basePrefix) =>
+  u(`${basePrefix}/.within.website/x/cmd/anubis/static/img/${mood}.webp`, {
     cacheBuster,
   });
-};
 
 // Detect available languages by loading the manifest
-const getAvailableLanguages = async function() {
+const getAvailableLanguages = async () => {
   const basePrefix = JSON.parse(
     document.getElementById("anubis_base_prefix").textContent,
   );
@@ -38,12 +37,11 @@ const getAvailableLanguages = async function() {
 };
 
 // Use the browser language from the HTML lang attribute which is set by the server settings or request headers
-const getBrowserLanguage = async function() {
-  return document.documentElement.lang;
-};
+const getBrowserLanguage = async () =>
+  document.documentElement.lang;
 
 // Load translations from JSON files
-const loadTranslations = async function(lang) {
+const loadTranslations = async (lang) => {
   const basePrefix = JSON.parse(
     document.getElementById("anubis_base_prefix").textContent,
   );
@@ -63,16 +61,14 @@ let translations = {};
 let currentLang;
 
 // Initialize translations
-const initTranslations = async function() {
+const initTranslations = async () => {
   currentLang = await getBrowserLanguage();
   translations = await loadTranslations(currentLang);
 };
 
-const t = function(key) {
-  return translations[`js_${key}`] || translations[key] || key;
-};
+const t = (key) => translations[`js_${key}`] || translations[key] || key;
 
-(async function() {
+(async () => {
   // Initialize translations first
   await initTranslations();
 
@@ -102,17 +98,14 @@ const t = function(key) {
   let userReadDetails = false;
 
   if (details) {
-    details.addEventListener("toggle", function() {
+    details.addEventListener("toggle", () => {
       if (details.open) {
         userReadDetails = true;
       }
     });
   }
 
-  const ohNoes = function(config) {
-    const titleMsg = config.titleMsg;
-    const statusMsg = config.statusMsg;
-    const imageSrc = config.imageSrc;
+  const ohNoes = ({ titleMsg, statusMsg, imageSrc }) => {
     title.innerHTML = titleMsg;
     status.innerHTML = statusMsg;
     image.src = imageSrc;
@@ -121,11 +114,7 @@ const t = function(key) {
 
   status.innerHTML = t('calculating');
 
-  for (let i = 0; i < dependencies.length; i++) {
-    const dependency = dependencies[i];
-    const value = dependency.value;
-    const name = dependency.name;
-    const msg = dependency.msg;
+  for (const { value, name, msg } of dependencies) {
     if (!value) {
       ohNoes({
         titleMsg: `${t('missing_feature')} ${name}`,
@@ -136,11 +125,9 @@ const t = function(key) {
     }
   }
 
-  const challengeData = JSON.parse(
+  const { challenge, rules } = JSON.parse(
     document.getElementById("anubis_challenge").textContent,
   );
-  const challenge = challengeData.challenge;
-  const rules = challengeData.rules;
 
   const process = algorithms[rules.algorithm];
   if (!process) {
@@ -167,12 +154,12 @@ const t = function(key) {
 
   try {
     const t0 = Date.now();
-    const result = await process(
+    const { hash, nonce } = await process(
       { basePrefix, version: anubisVersion },
       challenge.randomData,
       rules.difficulty,
       null,
-      function(iters) {
+      (iters) => {
         const delta = Date.now() - t0;
         // only update the speed every second so it's less visually distracting
         if (delta - lastSpeedUpdate > 1000) {
@@ -199,8 +186,6 @@ const t = function(key) {
         }
       },
     );
-    const hash = result.hash;
-    const nonce = result.nonce;
     const t1 = Date.now();
     console.log({ hash, nonce });
 
