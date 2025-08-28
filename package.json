@@ -18,6 +18,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@babel/cli": "^7.23.0",
     "@babel/core": "^7.23.0",
     "@babel/plugin-transform-arrow-functions": "^7.23.0",
     "@babel/plugin-transform-destructuring": "^7.23.0",
