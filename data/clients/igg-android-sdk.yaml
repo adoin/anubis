@@ -1,0 +1,9 @@
+- name: iggsdk-android-legacy-challenge
+  expression: >-
+    "IGGSDK" in headers.get("User-Agent", "") &&
+    headers.get("User-Agent", "").matches(".*Android ([0-9]+\\.[0-9]+).*") &&
+    double(headers.get("User-Agent", "").extract(".*Android ([0-9]+\\.[0-9]+).*")[0]) < 8.8
+  action: CHALLENGE
+  challenge:
+    algorithm: metarefresh
+    difficulty: 1
