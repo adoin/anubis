@@ -1,19 +1,6 @@
-- name: iggsdk-android-legacy-challenge
+- name: iggsdk-android-legacy-allow
   expression: >-
-    "IGGSDK" in headers.get("User-Agent", "") &&
-    headers.get("User-Agent", "").matches(".*Android ([0-9]+\\.[0-9]+).*") &&
-    double(headers.get("User-Agent", "").extract(".*Android ([0-9]+\\.[0-9]+).*")[0]) < 8.8
-  action: CHALLENGE
-  challenge:
-    algorithm: metarefresh
-    difficulty: 1
-    report_as: 1
-
-- name: iggsdk-android-legacy-weight-reduction
-  expression: >-
-    "IGGSDK" in headers.get("User-Agent", "") &&
-    headers.get("User-Agent", "").matches(".*Android ([0-9]+\\.[0-9]+).*") &&
-    double(headers.get("User-Agent", "").extract(".*Android ([0-9]+\\.[0-9]+).*")[0]) < 8.8
-  action: WEIGH
-  weight:
-    adjust: -100
+    userAgent.contains("IGGSDK") &&
+    (userAgent.matches(".*Android [0-7]\\..*") ||
+     userAgent.matches(".*Android 8\\.[0-7].*"))
+  action: ALLOW
