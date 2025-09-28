@@ -22,16 +22,29 @@ templ base(title string, body templ.Component, impressum *config.Impressum, chal
         body,
         html {
             height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-left: auto;
-            margin-right: auto;
+            margin: 0;
+            padding: 0;
             background-color: white;
+            overflow: hidden;
         }
 
         .centered-div {
-            text-align: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #image {
+            max-width: 100vw;
+            max-height: 100vh;
+            width: auto;
+            height: auto;
+            object-fit: contain;
         }
 
         #status {
@@ -122,7 +135,7 @@ templ bench(localizer *localization.SimpleLocalizer) {
 			></tbody>
 		</table>
 		<div class="centered-div">
-			<img id="image" style="width:100%;max-width:256px;" src={ anubis.BasePrefix + "/.within.website/x/cmd/anubis/static/img/loading.png?cacheBuster=" + anubis.Version }/>
+			<img id="image" src={ anubis.BasePrefix + "/.within.website/x/cmd/anubis/static/img/loading.png?cacheBuster=" + anubis.Version }/>
 			<script async src={ anubis.BasePrefix + "/.within.website/x/cmd/anubis/static/js/bench.js?cacheBuster=" + anubis.Version }></script>
 			<div id="sparkline" style="display:none;"></div>
 		</div>

@@ -111,7 +111,7 @@ func base(title string, body templ.Component, impressum *config.Impressum, chall
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "<style>\r\n        body,\r\n        html {\r\n            height: 100%;\r\n            display: flex;\r\n            justify-content: center;\r\n            align-items: center;\r\n            margin-left: auto;\r\n            margin-right: auto;\r\n            background-color: white;\r\n        }\r\n\r\n        .centered-div {\r\n            text-align: center;\r\n        }\r\n\r\n        #status {\r\n            font-variant-numeric: tabular-nums;\r\n        }\r\n\r\n        #progress {\r\n          display: none;\r\n          width: 90%;\r\n          width: min(20rem, 90%);\r\n          height: 2rem;\r\n          border-radius: 1rem;\r\n          overflow: hidden;\r\n          margin: 1rem 0 2rem;\r\n\t\t\t\t\toutline-offset: 2px;\r\n\t\t\t\t\toutline: #b16286 solid 4px;\r\n\t\t\t\t}\r\n\r\n        .bar-inner {\r\n            background-color: #b16286;\r\n            height: 100%;\r\n            width: 0;\r\n            transition: width 0.25s ease-in;\r\n        }\r\n    \t</style>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "<style>\r\n        body,\r\n        html {\r\n            height: 100%;\r\n            margin: 0;\r\n            padding: 0;\r\n            background-color: white;\r\n            overflow: hidden;\r\n        }\r\n\r\n        .centered-div {\r\n            position: fixed;\r\n            top: 0;\r\n            left: 0;\r\n            width: 100vw;\r\n            height: 100vh;\r\n            display: flex;\r\n            justify-content: center;\r\n            align-items: center;\r\n        }\r\n\r\n        #image {\r\n            max-width: 100vw;\r\n            max-height: 100vh;\r\n            width: auto;\r\n            height: auto;\r\n            object-fit: contain;\r\n        }\r\n\r\n        #status {\r\n            font-variant-numeric: tabular-nums;\r\n        }\r\n\r\n        #progress {\r\n          display: none;\r\n          width: 90%;\r\n          width: min(20rem, 90%);\r\n          height: 2rem;\r\n          border-radius: 1rem;\r\n          overflow: hidden;\r\n          margin: 1rem 0 2rem;\r\n\t\t\t\t\toutline-offset: 2px;\r\n\t\t\t\t\toutline: #b16286 solid 4px;\r\n\t\t\t\t}\r\n\r\n        .bar-inner {\r\n            background-color: #b16286;\r\n            height: 100%;\r\n            width: 0;\r\n            transition: width 0.25s ease-in;\r\n        }\r\n    \t</style>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -175,7 +175,7 @@ func errorPage(message, mail string, localizer *localization.SimpleLocalizer) te
 		var templ_7745c5c3_Var8 string
 		templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(anubis.BasePrefix + "/.within.website/x/cmd/anubis/static/img/reject.webp?cacheBuster=" + anubis.Version)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `index.templ`, Line: 75, Col: 181}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `index.templ`, Line: 88, Col: 181}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 		if templ_7745c5c3_Err != nil {
@@ -188,7 +188,7 @@ func errorPage(message, mail string, localizer *localization.SimpleLocalizer) te
 		var templ_7745c5c3_Var9 string
 		templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(message)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `index.templ`, Line: 76, Col: 14}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `index.templ`, Line: 89, Col: 14}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 		if templ_7745c5c3_Err != nil {
@@ -206,7 +206,7 @@ func errorPage(message, mail string, localizer *localization.SimpleLocalizer) te
 			var templ_7745c5c3_Var10 string
 			templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(localizer.T("go_home"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `index.templ`, Line: 79, Col: 40}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `index.templ`, Line: 92, Col: 40}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
 			if templ_7745c5c3_Err != nil {
@@ -219,7 +219,7 @@ func errorPage(message, mail string, localizer *localization.SimpleLocalizer) te
 			var templ_7745c5c3_Var11 string
 			templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(localizer.T("contact_webmaster"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `index.templ`, Line: 79, Col: 81}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `index.templ`, Line: 92, Col: 81}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
 			if templ_7745c5c3_Err != nil {
@@ -232,7 +232,7 @@ func errorPage(message, mail string, localizer *localization.SimpleLocalizer) te
 			var templ_7745c5c3_Var12 templ.SafeURL
 			templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinURLErrs("mailto:" + templ.SafeURL(mail))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `index.templ`, Line: 80, Col: 45}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `index.templ`, Line: 93, Col: 45}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
 			if templ_7745c5c3_Err != nil {
@@ -245,7 +245,7 @@ func errorPage(message, mail string, localizer *localization.SimpleLocalizer) te
 			var templ_7745c5c3_Var13 string
 			templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinStringErrs(mail)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `index.templ`, Line: 81, Col: 11}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `index.templ`, Line: 94, Col: 11}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var13))
 			if templ_7745c5c3_Err != nil {
@@ -263,7 +263,7 @@ func errorPage(message, mail string, localizer *localization.SimpleLocalizer) te
 			var templ_7745c5c3_Var14 string
 			templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.JoinStringErrs(localizer.T("go_home"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `index.templ`, Line: 85, Col: 42}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `index.templ`, Line: 98, Col: 42}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var14))
 			if templ_7745c5c3_Err != nil {
@@ -311,7 +311,7 @@ func StaticHappy(localizer *localization.SimpleLocalizer) templ.Component {
 		templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs("/.within.website/x/cmd/anubis/static/img/happy.webp?cacheBuster=" +
 			anubis.Version)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `index.templ`, Line: 96, Col: 18}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `index.templ`, Line: 109, Col: 18}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var16))
 		if templ_7745c5c3_Err != nil {
@@ -324,7 +324,7 @@ func StaticHappy(localizer *localization.SimpleLocalizer) templ.Component {
 		var templ_7745c5c3_Var17 string
 		templ_7745c5c3_Var17, templ_7745c5c3_Err = templ.JoinStringErrs(localizer.T("static_check_endpoint"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `index.templ`, Line: 98, Col: 43}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `index.templ`, Line: 111, Col: 43}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var17))
 		if templ_7745c5c3_Err != nil {
@@ -366,7 +366,7 @@ func bench(localizer *localization.SimpleLocalizer) templ.Component {
 		var templ_7745c5c3_Var19 string
 		templ_7745c5c3_Var19, templ_7745c5c3_Err = templ.JoinStringErrs(localizer.T("time"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `index.templ`, Line: 109, Col: 51}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `index.templ`, Line: 122, Col: 51}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var19))
 		if templ_7745c5c3_Err != nil {
@@ -379,7 +379,7 @@ func bench(localizer *localization.SimpleLocalizer) templ.Component {
 		var templ_7745c5c3_Var20 string
 		templ_7745c5c3_Var20, templ_7745c5c3_Err = templ.JoinStringErrs(localizer.T("iters"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `index.templ`, Line: 110, Col: 50}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `index.templ`, Line: 123, Col: 50}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var20))
 		if templ_7745c5c3_Err != nil {
@@ -392,7 +392,7 @@ func bench(localizer *localization.SimpleLocalizer) templ.Component {
 		var templ_7745c5c3_Var21 string
 		templ_7745c5c3_Var21, templ_7745c5c3_Err = templ.JoinStringErrs(localizer.T("time_a"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `index.templ`, Line: 113, Col: 53}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `index.templ`, Line: 126, Col: 53}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var21))
 		if templ_7745c5c3_Err != nil {
@@ -405,7 +405,7 @@ func bench(localizer *localization.SimpleLocalizer) templ.Component {
 		var templ_7745c5c3_Var22 string
 		templ_7745c5c3_Var22, templ_7745c5c3_Err = templ.JoinStringErrs(localizer.T("iters_a"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `index.templ`, Line: 114, Col: 52}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `index.templ`, Line: 127, Col: 52}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var22))
 		if templ_7745c5c3_Err != nil {
@@ -418,7 +418,7 @@ func bench(localizer *localization.SimpleLocalizer) templ.Component {
 		var templ_7745c5c3_Var23 string
 		templ_7745c5c3_Var23, templ_7745c5c3_Err = templ.JoinStringErrs(localizer.T("time_b"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `index.templ`, Line: 115, Col: 53}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `index.templ`, Line: 128, Col: 53}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var23))
 		if templ_7745c5c3_Err != nil {
@@ -431,20 +431,20 @@ func bench(localizer *localization.SimpleLocalizer) templ.Component {
 		var templ_7745c5c3_Var24 string
 		templ_7745c5c3_Var24, templ_7745c5c3_Err = templ.JoinStringErrs(localizer.T("iters_b"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `index.templ`, Line: 116, Col: 52}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `index.templ`, Line: 129, Col: 52}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var24))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 31, "</th></tr></thead> <tbody id=\"results\" style=\"padding-top:0.25rem;display:grid;grid-template-columns:subgrid;grid-auto-rows:min-content;grid-column:1/-1;row-gap:0.25rem;overflow-y:auto;font-variant-numeric:tabular-nums\"></tbody></table><div class=\"centered-div\"><img id=\"image\" style=\"width:100%;max-width:256px;\" src=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 31, "</th></tr></thead> <tbody id=\"results\" style=\"padding-top:0.25rem;display:grid;grid-template-columns:subgrid;grid-auto-rows:min-content;grid-column:1/-1;row-gap:0.25rem;overflow-y:auto;font-variant-numeric:tabular-nums\"></tbody></table><div class=\"centered-div\"><img id=\"image\" src=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var25 string
 		templ_7745c5c3_Var25, templ_7745c5c3_Err = templ.JoinStringErrs(anubis.BasePrefix + "/.within.website/x/cmd/anubis/static/img/loading.png?cacheBuster=" + anubis.Version)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `index.templ`, Line: 125, Col: 165}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `index.templ`, Line: 138, Col: 129}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var25))
 		if templ_7745c5c3_Err != nil {
@@ -457,7 +457,7 @@ func bench(localizer *localization.SimpleLocalizer) templ.Component {
 		var templ_7745c5c3_Var26 string
 		templ_7745c5c3_Var26, templ_7745c5c3_Err = templ.JoinStringErrs(anubis.BasePrefix + "/.within.website/x/cmd/anubis/static/js/bench.js?cacheBuster=" + anubis.Version)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `index.templ`, Line: 126, Col: 123}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `index.templ`, Line: 139, Col: 123}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var26))
 		if templ_7745c5c3_Err != nil {
@@ -470,7 +470,7 @@ func bench(localizer *localization.SimpleLocalizer) templ.Component {
 		var templ_7745c5c3_Var27 string
 		templ_7745c5c3_Var27, templ_7745c5c3_Err = templ.JoinStringErrs(localizer.T("difficulty"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `index.templ`, Line: 132, Col: 88}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `index.templ`, Line: 145, Col: 88}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var27))
 		if templ_7745c5c3_Err != nil {
@@ -483,7 +483,7 @@ func bench(localizer *localization.SimpleLocalizer) templ.Component {
 		var templ_7745c5c3_Var28 string
 		templ_7745c5c3_Var28, templ_7745c5c3_Err = templ.JoinStringErrs(localizer.T("algorithm"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `index.templ`, Line: 136, Col: 87}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `index.templ`, Line: 149, Col: 87}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var28))
 		if templ_7745c5c3_Err != nil {
@@ -496,7 +496,7 @@ func bench(localizer *localization.SimpleLocalizer) templ.Component {
 		var templ_7745c5c3_Var29 string
 		templ_7745c5c3_Var29, templ_7745c5c3_Err = templ.JoinStringErrs(localizer.T("compare"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `index.templ`, Line: 140, Col: 83}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `index.templ`, Line: 153, Col: 83}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var29))
 		if templ_7745c5c3_Err != nil {
