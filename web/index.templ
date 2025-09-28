@@ -28,6 +28,7 @@ templ base(title string, body templ.Component, impressum *config.Impressum, chal
             align-items: center;
             margin-left: auto;
             margin-right: auto;
+            background-color: white;
         }
 
         .centered-div {
@@ -64,25 +65,7 @@ templ base(title string, body templ.Component, impressum *config.Impressum, chal
 		</head>
 		<body id="top">
 			<main>
-				<h1 id="title" class="centered-div">{ title }</h1>
 				@body
-				<footer>
-					<div class="centered-div">
-						<p>
-							{ localizer.T("protected_by") } <a href="https://github.com/TecharoHQ/anubis">Anubis</a> { localizer.T("protected_from") } <a
-	href="https://techaro.lol"
->Techaro</a>. { localizer.T("made_with") }.
-						</p>
-						<p>{ localizer.T("mascot_design") } <a href="https://bsky.app/profile/celphase.bsky.social">{ localizer.T("celphase") }</a>.</p>
-						if impressum != nil {
-							<p>
-								@templ.Raw(impressum.Footer)
-								-- <a href={ templ.SafeURL(fmt.Sprintf("%simprint", anubis.APIPrefix)) }>Imprint</a>
-							</p>
-						}
-						<p>{ localizer.T("version_info") } <code>{ anubis.Version }</code>.</p>
-					</div>
-				</footer>
 			</main>
 		</body>
 	</html>
@@ -140,13 +123,9 @@ templ bench(localizer *localization.SimpleLocalizer) {
 			></tbody>
 		</table>
 		<div class="centered-div">
-			<img id="image" style="width:100%;max-width:256px;" src={ anubis.BasePrefix + "/.within.website/x/cmd/anubis/static/img/pensive.webp?cacheBuster=" + anubis.Version }/>
-			<p id="status" style="max-width:256px">{ localizer.T("loading") }</p>
+			<img id="image" style="width:100%;max-width:256px;" src={ anubis.BasePrefix + "/.within.website/x/cmd/anubis/static/img/anubis/loading.png?cacheBuster=" + anubis.Version }/>
 			<script async src={ anubis.BasePrefix + "/.within.website/x/cmd/anubis/static/js/bench.js?cacheBuster=" + anubis.Version }></script>
-			<div id="sparkline"></div>
-			<noscript>
-				<p>{ localizer.T("benchmark_requires_js") }</p>
-			</noscript>
+			<div id="sparkline" style="display:none;"></div>
 		</div>
 	</div>
 	<form id="controls" style="position:fixed;top:0.5rem;right:0.5rem">
