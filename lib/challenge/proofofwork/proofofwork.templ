@@ -8,7 +8,28 @@ import (
 templ page(localizer *localization.SimpleLocalizer) {
 	<div class="centered-div">
 		<img id="image" src={ anubis.BasePrefix + "/.within.website/x/cmd/anubis/static/img/loading.png?cacheBuster=" + anubis.Version }/>
+		<div class="loading-info">
+			<h1 id="title">{ localizer.T("verifying_connection") }</h1>
+			<p id="status">{ localizer.T("loading") }</p>
+			<div id="progress" role="progressbar" aria-labelledby="status">
+				<div class="bar-inner"></div>
+			</div>
+		</div>
+		<details class="details-info">
+			<summary>{ localizer.T("why_seeing_this") }</summary>
+			if anubis.UseSimplifiedExplanation {
+				<p>{ localizer.T("simplified_explanation") }</p>
+			} else {
+				<p>{ localizer.T("ai_companies_explanation") }</p>
+				<p>{ localizer.T("anubis_compromise") }</p>
+				<p>{ localizer.T("hack_purpose") }</p>
+				<p>{ localizer.T("jshelter_note") }</p>
+			}
+		</details>
 		<script async src={ anubis.BasePrefix + "/.within.website/x/cmd/anubis/static/js/main.js?cacheBuster=" + anubis.Version }></script>
 		<div id="testarea" style="display:none;"></div>
+		<noscript>
+			<p class="noscript-message">{ localizer.T("javascript_required") }</p>
+		</noscript>
 	</div>
 }
