@@ -78,7 +78,7 @@ func page(localizer *localization.SimpleLocalizer) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var5 string
-		templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(localizer.T("why_seeing_this"))
+		templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(localizer.T("why_am_i_seeing"))
 		if templ_7745c5c3_Err != nil {
 			return templ.Error{Err: templ_7745c5c3_Err, FileName: `proofofwork.templ`, Line: 19, Col: 44}
 		}
