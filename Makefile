@@ -13,8 +13,13 @@ deps:
 assets: PATH:=$(PWD)/node_modules/.bin:$(PATH)
 assets: deps
 	$(GO) generate ./...
+ifeq ($(OS),Windows_NT)
+	powershell -ExecutionPolicy Bypass -File ./web/build.ps1
+	powershell -ExecutionPolicy Bypass -File ./xess/build.ps1
+else
 	./web/build.sh
 	./xess/build.sh
+endif
 
 build: assets
 	$(GO) build -o ./var/anubis ./cmd/anubis
