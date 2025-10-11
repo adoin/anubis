@@ -1,6 +1,7 @@
 - name: iggsdk-android-legacy-allow
+# IGGSDK GPCSDK 还有 OperationsSDK、PappusSDK
   expression: >-
-    userAgent.contains("IGGSDK") &&
+    (userAgent.contains("IGGSDK")||userAgent.contains("GPCSDK")||userAgent.contains("OperationsSDK")||userAgent.contains("PappusSDK")) &&
     (userAgent.matches(".*Android [0-7]\\..*") ||
      userAgent.matches(".*Android 8\\.[0-7].*"))
   action: ALLOW
