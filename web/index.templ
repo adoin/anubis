@@ -1,7 +1,6 @@
 package web
 
 import (
-	"fmt"
 	"github.com/TecharoHQ/anubis"
 	"github.com/TecharoHQ/anubis/lib/localization"
 	"github.com/TecharoHQ/anubis/lib/policy/config"
@@ -23,65 +22,129 @@ templ base(title string, body templ.Component, impressum *config.Impressum, chal
         body,
         html {
             height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-left: auto;
-            margin-right: auto;
+            margin: 0;
+            padding: 0;
+            background-color: white;
+            overflow: hidden;
         }
 
         .centered-div {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #image {
+            max-width: 100vw;
+            max-height: 60vh;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            margin-bottom: 2rem;
+        }
+
+        .loading-info {
+            position: absolute;
+            bottom: 15%;
+            left: 50%;
+            transform: translateX(-50%);
             text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        #title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #333;
+            margin: 0 0 0.5rem 0;
         }
 
         #status {
+            font-size: 1rem;
+            color: #666;
+            margin: 0 0 1rem 0;
             font-variant-numeric: tabular-nums;
         }
 
         #progress {
-          display: none;
-          width: 90%;
-          width: min(20rem, 90%);
-          height: 2rem;
-          border-radius: 1rem;
-          overflow: hidden;
-          margin: 1rem 0 2rem;
-					outline-offset: 2px;
-					outline: #b16286 solid 4px;
-				}
+            width: 100%;
+            max-width: 300px;
+            height: 8px;
+            background-color: #f0f0f0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 0 auto;
+            display: none;
+        }
 
         .bar-inner {
-            background-color: #b16286;
+            background-color: #007acc;
             height: 100%;
             width: 0;
-            transition: width 0.25s ease-in;
+            transition: width 0.3s ease;
+        }
+
+        .details-info {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            max-width: 500px;
+            width: 90%;
+        }
+
+        .details-info summary {
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: #666;
+            text-align: center;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+        }
+
+        .details-info summary:hover {
+            background-color: #f0f0f0;
+        }
+
+        .details-info p {
+            font-size: 0.85rem;
+            color: #555;
+            line-height: 1.4;
+            margin: 0.5rem 0;
+            padding: 1rem;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-top: none;
+            border-radius: 0 0 4px 4px;
+        }
+
+        .noscript-message {
+            position: absolute;
+            bottom: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #d32f2f;
+            font-size: 0.9rem;
+            text-align: center;
         }
     	</style>
 			@templ.JSONScript("anubis_version", anubis.Version)
 			@templ.JSONScript("anubis_challenge", challenge)
 			@templ.JSONScript("anubis_base_prefix", anubis.BasePrefix)
+			@templ.JSONScript("anubis_public_url", anubis.PublicUrl)
 		</head>
 		<body id="top">
 			<main>
-				<h1 id="title" class="centered-div">{ title }</h1>
+				<h1 id="title" style="display:none;">{ title }</h1>
 				@body
-				<footer>
-					<div class="centered-div">
-						<p>
-							{ localizer.T("protected_by") } <a href="https://github.com/TecharoHQ/anubis">Anubis</a> { localizer.T("protected_from") } <a
-	href="https://techaro.lol"
->Techaro</a>. { localizer.T("made_with") }.
-						</p>
-						<p>{ localizer.T("mascot_design") } <a href="https://bsky.app/profile/celphase.bsky.social">{ localizer.T("celphase") }</a>.</p>
-						if impressum != nil {
-							<p>
-								@templ.Raw(impressum.Footer)
-								-- <a href={ templ.SafeURL(fmt.Sprintf("%simprint", anubis.APIPrefix)) }>Imprint</a>
-							</p>
-						}
-						<p>{ localizer.T("version_info") } <code>{ anubis.Version }</code>.</p>
-					</div>
-				</footer>
 			</main>
 		</body>
 	</html>
@@ -139,12 +202,14 @@ templ bench(localizer *localization.SimpleLocalizer) {
 			></tbody>
 		</table>
 		<div class="centered-div">
-			<img id="image" style="width:100%;max-width:256px;" src={ anubis.BasePrefix + "/.within.website/x/cmd/anubis/static/img/pensive.webp?cacheBuster=" + anubis.Version }/>
-			<p id="status" style="max-width:256px">{ localizer.T("loading") }</p>
+			<img id="image" src={ anubis.BasePrefix + "/.within.website/x/cmd/anubis/static/img/loading.png?cacheBuster=" + anubis.Version }/>
+			<div class="loading-info">
+				<p id="status" style="max-width:256px">{ localizer.T("loading") }</p>
+			</div>
 			<script async src={ anubis.BasePrefix + "/.within.website/x/cmd/anubis/static/js/bench.js?cacheBuster=" + anubis.Version }></script>
-			<div id="sparkline"></div>
+			<div id="sparkline" style="display:none;"></div>
 			<noscript>
-				<p>{ localizer.T("benchmark_requires_js") }</p>
+				<p class="noscript-message">{ localizer.T("benchmark_requires_js") }</p>
 			</noscript>
 		</div>
 	</div>

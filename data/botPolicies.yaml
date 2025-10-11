@@ -37,6 +37,8 @@ bots:
   - import: (data)/crawlers/_allow-good.yaml
   # Challenge Firefox AI previews
   - import: (data)/clients/x-firefox-ai.yaml
+  # IGG Android SDK legacy challenge
+  - import: (data)/clients/igg-android-sdk.yaml
 
   # Allow common "keeping the internet working" routes (well-known, favicon, robots.txt)
   - import: (data)/common/keep-internet-working.yaml

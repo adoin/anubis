@@ -65,6 +65,17 @@ const loadTranslations = async (lang) => {
   }
 };
 
+const getRedirectUrl = () => {
+  const publicUrl = JSON.parse(
+    document.getElementById("anubis_public_url").textContent,
+  );
+  if (publicUrl && window.location.href.startsWith(publicUrl)) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get('redir');
+  }
+  return window.location.href;
+}
+
 let translations = {};
 let currentLang;
 
@@ -217,7 +228,7 @@ const t = (key) => translations[`js_${key}`] || translations[key] || key;
       container.innerHTML = t('finished_reading');
 
       function onDetailsExpand() {
-        const redir = window.location.href;
+        const redir = getRedirectUrl();
         window.location.replace(
           u(`${basePrefix}/.within.website/x/cmd/anubis/api/pass-challenge`, {
             id: challenge.id,
@@ -232,7 +243,7 @@ const t = (key) => translations[`js_${key}`] || translations[key] || key;
       container.onclick = onDetailsExpand;
       setTimeout(onDetailsExpand, 30000);
     } else {
-      const redir = window.location.href;
+      const redir = getRedirectUrl();
       window.location.replace(
         u(`${basePrefix}/.within.website/x/cmd/anubis/api/pass-challenge`, {
           id: challenge.id,
