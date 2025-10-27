@@ -12,6 +12,7 @@
     "build:web": "powershell -ExecutionPolicy Bypass -File ./web/build.ps1",
     "build:xess": "powershell -ExecutionPolicy Bypass -File ./xess/build.ps1",
     "build": "npm run assets && go build -o ./var/anubis ./cmd/anubis",
+    "build:windows": "npm run assets && go build -o ./var/anubis.exe ./cmd/anubis",
     "dev": "npm run assets && go run ./cmd/anubis --use-remote-address --target http://localhost:3000",
     "container": "npm run assets && go run ./cmd/containerbuild",
     "package": "yeet",
