@@ -131,7 +131,7 @@ const t = (key) => translations[`js_${key}`] || translations[key] || key;
     progress.style.display = "none";
   };
 
-  status.innerHTML = t('calculating');
+  status.innerHTML = t('loading');
 
   for (const { value, name, msg } of dependencies) {
     if (!value) {
@@ -158,14 +158,8 @@ const t = (key) => translations[`js_${key}`] || translations[key] || key;
     return;
   }
 
-  status.innerHTML = `${t('calculating_difficulty')} ${rules.report_as}, `;
+  status.innerHTML = t('loading');
   progress.style.display = "inline-block";
-
-  // the whole text, including "Speed:", as a single node, because some browsers
-  // (Firefox mobile) present screen readers with each node as a separate piece
-  // of text.
-  const rateText = document.createTextNode(`${t('speed')} 0kH/s`);
-  status.appendChild(rateText);
 
   let lastSpeedUpdate = 0;
   let showingApology = false;
@@ -180,11 +174,6 @@ const t = (key) => translations[`js_${key}`] || translations[key] || key;
       null,
       (iters) => {
         const delta = Date.now() - t0;
-        // only update the speed every second so it's less visually distracting
-        if (delta - lastSpeedUpdate > 1000) {
-          lastSpeedUpdate = delta;
-          rateText.data = `${t('speed')} ${(iters / delta).toFixed(3)}kH/s`;
-        }
         // the probability of still being on the page is (1 - likelihood) ^ iters.
         // by definition, half of the time the progress bar only gets to half, so
         // apply a polynomial ease-out function to move faster in the beginning

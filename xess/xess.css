@@ -79,12 +79,11 @@ html {
   text-align: center;
 }
 
-#status {
-  font-variant-numeric: tabular-nums;
-}
-
-.centered-div {
-  text-align: center;
+#image {
+  max-width: 40vmin;
+  max-height: 40vmin;
+  width: auto;
+  height: auto;
 }
 
 #status {
