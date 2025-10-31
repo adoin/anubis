@@ -1,0 +1,27 @@
+[1mdiff --git a/build-docker.sh b/build-docker.sh[m
+[1mindex 105ed94..0f95ceb 100644[m
+[1m--- a/build-docker.sh[m
+[1m+++ b/build-docker.sh[m
+[36m@@ -1,6 +1,10 @@[m
+ #!/bin/sh[m
+[31m-[m
+[32m+[m[32mexport PATH=$PATH:/usr/local/go/bin[m
+[32m+[m[32mexport GOPATH=$HOME/go[m
+[32m+[m[32mexport GOBIN=$GOPATH/bin[m
+[32m+[m[32mexport PATH=$PATH:$GOBIN[m
+ make all[m
+[32m+[m[32mCURRENT_DATE=$(date +%Y%m%d)[m
+ docker build -t anubis-ng:main .[m
+[31m-docker tag anubis-ng:main cargo.skyunion.net/public/anubis:20251014[m
+[31m-docker push cargo.skyunion.net/public/anubis:20251014[m
+[32m+[m[32mdocker tag anubis-ng:main cargo.skyunion.net/public/anubis:$CURRENT_DATE[m
+[32m+[m[32mdocker push cargo.skyunion.net/public/anubis:$CURRENT_DATE[m
+[1mdiff --git a/web/index_templ.go b/web/index_templ.go[m
+[1mindex 0a31a39..03b0052 100644[m
+[1m--- a/web/index_templ.go[m
+[1m+++ b/web/index_templ.go[m
+[36m@@ -111,7 +111,7 @@[m [mfunc base(title string, body templ.Component, impressum *config.Impressum, chall[m
+ 				return templ_7745c5c3_Err[m
+ 			}[m
+ 		}[m
+[31m-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "<style>\r\n        body,\r\n        html {\r\n            height: 100%;\r\n            margin: 0;\r\n            padding: 0;\r\n            background-color: white;\r\n            overflow: hidden;\r\n        }\r\n\r\n        .centered-div {\r\n            position: fixed;\r\n            top: 0;\r\n            left: 0;\r\n            width: 100vw;\r\n            height: 100vh;\r\n            display: flex;\r\n            justify-content: center;\r\n            align-items: center;\r\n        }\r\n\r\n        #image {\r\n            max-width: 100vw;\r\n            max-height: 75vh;\r\n            width: auto;\r\n            height: auto;\r\n            object-fit: contain;\r\n            margin-bottom: 2rem;\r\n        }\r\n\r\n        .loading-info {\r\n            position: absolute;\r\n            bottom: 15%;\r\n            left: 50%;\r\n            transform: translateX(-50%);\r\n            text-align: center;\r\n            max-width: 400px;\r\n            width: 90%;\r\n        }\r\n\r\n        #title {\r\n            font-size: 1.5rem;\r\n            font-weight: 600;\r\n            color: #333;\r\n            margin: 0 0 0.5rem 0;\r\n        }\r\n\r\n        #status {\r\n            font-size: 1rem;\r\n            color: #666;\r\n            margin: 0 0 1rem 0;\r\n            font-variant-numeric: tabular-nums;\r\n        }\r\n\r\n        #progress {\r\n            width: 100%;\r\n            max-width: 300px;\r\n            height: 8px;\r\n            background-color: #f0f0f0;\r\n            border-radius: 4px;\r\n            overflow: hidden;\r\n            margin: 0 auto;\r\n            display: none;\r\n        }\r\n\r\n        .bar-inner {\r\n            background-color: #007acc;\r\n            height: 100%;\r\n            width: 0;\r\n            transition: width 0.3s ease;\r\n        }\r\n\r\n        .details-info {\r\n            position: absolute;\r\n            bottom: 2rem;\r\n            left: 50%;\r\n            transform: translateX(-50%);\r\n            max-width: 500px;\r\n            width: 90%;\r\n        }\r\n\r\n        .details-info summary {\r\n            cursor: pointer;\r\n            font-size: 0.9rem;\r\n            color: #666;\r\n            text-align: center;\r\n            padding: 0.5rem;\r\n            border: 1px solid #ddd;\r\n            border-radius: 4px;\r\n            background-color: #f9f9f9;\r\n        }\r\n\r\n        .details-info summary:hover {\r\n            background-color: #f0f0f0;\r\n        }\r\n\r\n        .details-info p {\r\n            font-size: 0.85rem;\r\n            color: #555;\r\n            line-height: 1.4;\r\n            margin: 0.5rem 0;\r\n            padding: 1rem;\r\n            background-color: #f9f9f9;\r\n            border: 1px solid #ddd;\r\n            border-top: none;\r\n            border-radius: 0 0 4px 4px;\r\n        }\r\n\r\n        .noscript-message {\r\n       
