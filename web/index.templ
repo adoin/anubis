@@ -152,30 +152,30 @@ templ base(title string, body templ.Component, impressum *config.Impressum, chal
 
 templ errorPage(message, mail string, localizer *localization.SimpleLocalizer) {
 	<div class="centered-div">
-		<img id="image" alt="Sad Anubis" style="width:100%;max-width:256px;" src={ anubis.BasePrefix + "/.within.website/x/cmd/anubis/static/img/reject.webp?cacheBuster=" + anubis.Version }/>
-		<p>{ message }.</p>
-		if mail != "" {
-			<p>
-				<a href="/">{ localizer.T("go_home") }</a> { localizer.T("contact_webmaster") }
-				<a href={ "mailto:" + templ.SafeURL(mail) }>
-					{ mail }
-				</a>
-			</p>
-		} else {
-			<p><a href="/">{ localizer.T("go_home") }</a></p>
-		}
+		<img id="image" src={ anubis.BasePrefix + "/.within.website/x/cmd/anubis/static/img/failed.png?cacheBuster=" + anubis.Version }/>
+		<div class="loading-info">
+			<p id="status">{ message }.</p>
+			if mail != "" {
+				<p style="margin-top: 1rem;">
+					<a href="/">{ localizer.T("go_home") }</a> { localizer.T("contact_webmaster") }
+					<a href={ "mailto:" + templ.SafeURL(mail) }>
+						{ mail }
+					</a>
+				</p>
+			} else {
+				<p style="margin-top: 1rem;"><a href="/">{ localizer.T("go_home") }</a></p>
+			}
+		</div>
 	</div>
 }
 
 templ StaticHappy(localizer *localization.SimpleLocalizer) {
 	<div class="centered-div">
-		<img
-			style="display:none;"
-			style="width:100%;max-width:256px;"
-			src={ "/.within.website/x/cmd/anubis/static/img/happy.webp?cacheBuster=" +
-    anubis.Version }
-		/>
-		<p>{ localizer.T("static_check_endpoint") }</p>
+		<img id="image" src={ anubis.BasePrefix + "/.within.website/x/cmd/anubis/static/img/success.png?cacheBuster=" + anubis.Version }/>
+		<div class="loading-info">
+			<p id="status">{ localizer.T("you_are_not_a_bot") }</p>
+			<p style="margin-top: 1rem; font-size: 0.9rem; color: #666;">{ localizer.T("static_check_endpoint") }</p>
+		</div>
 	</div>
 }
 
