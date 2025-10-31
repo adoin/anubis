@@ -80,10 +80,12 @@ html {
 }
 
 #image {
-  max-width: 40vmin;
-  max-height: 40vmin;
+  max-width: 100vw;
+  max-height: 25vmin;
   width: auto;
   height: auto;
+  object-fit: contain;
+  margin-bottom: 2rem;
 }
 
 #status {
