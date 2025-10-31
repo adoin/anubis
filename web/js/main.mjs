@@ -19,10 +19,12 @@ const u = (url = "", params = {}) => {
   return result.toString();
 };
 
-const imageURL = (mood, cacheBuster, basePrefix) =>
-  u(`${basePrefix}/.within.website/x/cmd/anubis/static/img/${mood}.webp`, {
+const imageURL = (mood, cacheBuster, basePrefix) => {
+  const ext = (mood === 'failed' || mood === 'success' || mood === 'loading') ? 'png' : 'webp';
+  return u(`${basePrefix}/.within.website/x/cmd/anubis/static/img/${mood}.${ext}`, {
     cacheBuster,
   });
+};
 
 // Detect available languages by loading the manifest
 const getAvailableLanguages = async () => {
@@ -138,7 +140,7 @@ const t = (key) => translations[`js_${key}`] || translations[key] || key;
       ohNoes({
         titleMsg: `${t('missing_feature')} ${name}`,
         statusMsg: msg,
-        imageSrc: imageURL("reject", anubisVersion, basePrefix),
+        imageSrc: imageURL("failed", anubisVersion, basePrefix),
       });
       return;
     }
@@ -153,7 +155,7 @@ const t = (key) => translations[`js_${key}`] || translations[key] || key;
     ohNoes({
       titleMsg: t('challenge_error'),
       statusMsg: t('challenge_error_msg'),
-      imageSrc: imageURL("reject", anubisVersion, basePrefix),
+      imageSrc: imageURL("failed", anubisVersion, basePrefix),
     });
     return;
   }
@@ -247,7 +249,7 @@ const t = (key) => translations[`js_${key}`] || translations[key] || key;
     ohNoes({
       titleMsg: t('calculation_error'),
       statusMsg: `${t('calculation_error_msg')} ${err.message}`,
-      imageSrc: imageURL("reject", anubisVersion, basePrefix),
+      imageSrc: imageURL("failed", anubisVersion, basePrefix),
     });
   }
 })();
