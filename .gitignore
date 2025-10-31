@@ -23,3 +23,6 @@ node_modules
 doc/VERSION
 
 web/static/locales/*.json
+
+# Generated templ files
+web/index_templ.go
