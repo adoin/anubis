@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/TecharoHQ/anubis/internal"
 	chall "github.com/TecharoHQ/anubis/lib/challenge"
@@ -33,32 +34,53 @@ func (i *Impl) Issue(r *http.Request, lg *slog.Logger, in *chall.IssueInput) (te
 }
 
 func (i *Impl) Validate(r *http.Request, lg *slog.Logger, in *chall.ValidateInput) error {
+	start := time.Now()
+
 	rule := in.Rule
 	challenge := in.Challenge.RandomData
 
 	nonceStr := r.FormValue("nonce")
 	if nonceStr == "" {
+		duration := time.Since(start)
+		lg.Debug("validate",
+			"duration_ms", duration.Milliseconds(),
+			"validate_result", "missing_nonce")
 		return chall.NewError("validate", "invalid response", fmt.Errorf("%w nonce", chall.ErrMissingField))
 	}
 
 	nonce, err := strconv.Atoi(nonceStr)
 	if err != nil {
+		duration := time.Since(start)
+		lg.Debug("validate",
+			"duration_ms", duration.Milliseconds(),
+			"validate_result", "invalid_nonce_format")
 		return chall.NewError("validate", "invalid response", fmt.Errorf("%w: nonce: %w", chall.ErrInvalidFormat, err))
-
 	}
 
 	elapsedTimeStr := r.FormValue("elapsedTime")
 	if elapsedTimeStr == "" {
+		duration := time.Since(start)
+		lg.Debug("validate",
+			"duration_ms", duration.Milliseconds(),
+			"validate_result", "missing_elapsed_time")
 		return chall.NewError("validate", "invalid response", fmt.Errorf("%w elapsedTime", chall.ErrMissingField))
 	}
 
 	elapsedTime, err := strconv.ParseFloat(elapsedTimeStr, 64)
 	if err != nil {
+		duration := time.Since(start)
+		lg.Debug("validate",
+			"duration_ms", duration.Milliseconds(),
+			"validate_result", "invalid_elapsed_time_format")
 		return chall.NewError("validate", "invalid response", fmt.Errorf("%w: elapsedTime: %w", chall.ErrInvalidFormat, err))
 	}
 
 	response := r.FormValue("response")
 	if response == "" {
+		duration := time.Since(start)
+		lg.Debug("validate",
+			"duration_ms", duration.Milliseconds(),
+			"validate_result", "missing_response")
 		return chall.NewError("validate", "invalid response", fmt.Errorf("%w response", chall.ErrMissingField))
 	}
 
@@ -66,15 +88,27 @@ func (i *Impl) Validate(r *http.Request, lg *slog.Logger, in *chall.ValidateInpu
 	calculated := internal.SHA256sum(calcString)
 
 	if subtle.ConstantTimeCompare([]byte(response), []byte(calculated)) != 1 {
+		duration := time.Since(start)
+		lg.Debug("validate",
+			"duration_ms", duration.Milliseconds(),
+			"validate_result", "response_mismatch")
 		return chall.NewError("validate", "invalid response", fmt.Errorf("%w: wanted response %s but got %s", chall.ErrFailed, calculated, response))
 	}
 
 	// compare the leading zeroes
 	if !strings.HasPrefix(response, strings.Repeat("0", rule.Challenge.Difficulty)) {
+		duration := time.Since(start)
+		lg.Debug("validate",
+			"duration_ms", duration.Milliseconds(),
+			"validate_result", "insufficient_difficulty")
 		return chall.NewError("validate", "invalid response", fmt.Errorf("%w: wanted %d leading zeros but got %s", chall.ErrFailed, rule.Challenge.Difficulty, response))
 	}
 
+	duration := time.Since(start)
 	lg.Debug("challenge took", "elapsedTime", elapsedTime)
+	lg.Debug("validate",
+		"duration_ms", duration.Milliseconds(),
+		"validate_result", "success")
 	chall.TimeTaken.WithLabelValues(i.Algorithm).Observe(elapsedTime)
 
 	return nil
