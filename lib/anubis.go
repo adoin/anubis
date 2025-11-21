@@ -541,7 +541,7 @@ func (s *Server) PassChallenge(w http.ResponseWriter, r *http.Request) {
 	}
 
 	challengesValidated.WithLabelValues(rule.Challenge.Algorithm).Inc()
-	lg.Debug("challenge passed, redirecting to app")
+	lg.Info("challenge validated successfully", "challenge", chall.ID, "method", rule.Challenge.Algorithm)
 	http.Redirect(w, r, redir, http.StatusFound)
 }
 
