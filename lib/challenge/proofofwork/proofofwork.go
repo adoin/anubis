@@ -119,8 +119,11 @@ func (i *Impl) Validate(r *http.Request, lg *slog.Logger, in *chall.ValidateInpu
 	}
 
 	duration := time.Since(start)
+	// Calculate total duration from challenge issuance to validation completion
+	totalDuration := time.Since(in.Challenge.IssuedAt)
 	lg.Info("challenge validated",
 		"duration", formatDuration(duration),
+		"total_duration", formatDuration(totalDuration),
 		"elapsed_time", elapsedTime,
 		"validate_result", "success",
 		"algorithm", i.Algorithm)

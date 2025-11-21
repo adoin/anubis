@@ -543,10 +543,13 @@ func (s *Server) PassChallenge(w http.ResponseWriter, r *http.Request) {
 
 	challengesValidated.WithLabelValues(rule.Challenge.Algorithm).Inc()
 	duration := time.Since(start)
+	// Calculate total duration from challenge issuance to validation completion
+	totalDuration := time.Since(chall.IssuedAt)
 	lg.Info("challenge validated successfully",
 		"challenge", chall.ID,
 		"method", rule.Challenge.Algorithm,
-		"duration", formatDuration(duration))
+		"duration", formatDuration(duration),
+		"total_duration", formatDuration(totalDuration))
 	http.Redirect(w, r, redir, http.StatusFound)
 }
 
