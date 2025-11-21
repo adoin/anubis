@@ -22,6 +22,20 @@ func init() {
 	chall.Register("slow", &Impl{Algorithm: "slow"})
 }
 
+// formatDuration formats a duration with appropriate unit (s, ms, or us)
+func formatDuration(d time.Duration) string {
+	us := d.Microseconds()
+	if us >= 1000000 {
+		// >= 1 second, show in seconds
+		return fmt.Sprintf("%.2fs", float64(us)/1000000.0)
+	} else if us >= 1000 {
+		// >= 1 millisecond, show in milliseconds
+		return fmt.Sprintf("%dms", us/1000)
+	}
+	// < 1 millisecond, show in microseconds
+	return fmt.Sprintf("%dus", us)
+}
+
 type Impl struct {
 	Algorithm string
 }
@@ -43,7 +57,7 @@ func (i *Impl) Validate(r *http.Request, lg *slog.Logger, in *chall.ValidateInpu
 	if nonceStr == "" {
 		duration := time.Since(start)
 		lg.Info("validate",
-			"duration_ms", duration.Milliseconds(),
+			"duration", formatDuration(duration),
 			"validate_result", "missing_nonce")
 		return chall.NewError("validate", "invalid response", fmt.Errorf("%w nonce", chall.ErrMissingField))
 	}
@@ -52,7 +66,7 @@ func (i *Impl) Validate(r *http.Request, lg *slog.Logger, in *chall.ValidateInpu
 	if err != nil {
 		duration := time.Since(start)
 		lg.Info("validate",
-			"duration_ms", duration.Milliseconds(),
+			"duration", formatDuration(duration),
 			"validate_result", "invalid_nonce_format")
 		return chall.NewError("validate", "invalid response", fmt.Errorf("%w: nonce: %w", chall.ErrInvalidFormat, err))
 	}
@@ -61,7 +75,7 @@ func (i *Impl) Validate(r *http.Request, lg *slog.Logger, in *chall.ValidateInpu
 	if elapsedTimeStr == "" {
 		duration := time.Since(start)
 		lg.Info("validate",
-			"duration_ms", duration.Milliseconds(),
+			"duration", formatDuration(duration),
 			"validate_result", "missing_elapsed_time")
 		return chall.NewError("validate", "invalid response", fmt.Errorf("%w elapsedTime", chall.ErrMissingField))
 	}
@@ -70,7 +84,7 @@ func (i *Impl) Validate(r *http.Request, lg *slog.Logger, in *chall.ValidateInpu
 	if err != nil {
 		duration := time.Since(start)
 		lg.Info("validate",
-			"duration_ms", duration.Milliseconds(),
+			"duration", formatDuration(duration),
 			"validate_result", "invalid_elapsed_time_format")
 		return chall.NewError("validate", "invalid response", fmt.Errorf("%w: elapsedTime: %w", chall.ErrInvalidFormat, err))
 	}
@@ -79,7 +93,7 @@ func (i *Impl) Validate(r *http.Request, lg *slog.Logger, in *chall.ValidateInpu
 	if response == "" {
 		duration := time.Since(start)
 		lg.Info("validate",
-			"duration_ms", duration.Milliseconds(),
+			"duration", formatDuration(duration),
 			"validate_result", "missing_response")
 		return chall.NewError("validate", "invalid response", fmt.Errorf("%w response", chall.ErrMissingField))
 	}
@@ -90,7 +104,7 @@ func (i *Impl) Validate(r *http.Request, lg *slog.Logger, in *chall.ValidateInpu
 	if subtle.ConstantTimeCompare([]byte(response), []byte(calculated)) != 1 {
 		duration := time.Since(start)
 		lg.Info("validate",
-			"duration_ms", duration.Milliseconds(),
+			"duration", formatDuration(duration),
 			"validate_result", "response_mismatch")
 		return chall.NewError("validate", "invalid response", fmt.Errorf("%w: wanted response %s but got %s", chall.ErrFailed, calculated, response))
 	}
@@ -99,14 +113,14 @@ func (i *Impl) Validate(r *http.Request, lg *slog.Logger, in *chall.ValidateInpu
 	if !strings.HasPrefix(response, strings.Repeat("0", rule.Challenge.Difficulty)) {
 		duration := time.Since(start)
 		lg.Info("validate",
-			"duration_ms", duration.Milliseconds(),
+			"duration", formatDuration(duration),
 			"validate_result", "insufficient_difficulty")
 		return chall.NewError("validate", "invalid response", fmt.Errorf("%w: wanted %d leading zeros but got %s", chall.ErrFailed, rule.Challenge.Difficulty, response))
 	}
 
 	duration := time.Since(start)
 	lg.Info("challenge validated",
-		"duration_ms", duration.Milliseconds(),
+		"duration", formatDuration(duration),
 		"elapsed_time", elapsedTime,
 		"validate_result", "success",
 		"algorithm", i.Algorithm)

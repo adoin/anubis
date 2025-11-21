@@ -392,6 +392,7 @@ func (s *Server) MakeChallenge(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) PassChallenge(w http.ResponseWriter, r *http.Request) {
+	start := time.Now()
 	lg := internal.GetRequestLogger(s.logger, r)
 	localizer := localization.GetLocalizer(r)
 
@@ -541,8 +542,26 @@ func (s *Server) PassChallenge(w http.ResponseWriter, r *http.Request) {
 	}
 
 	challengesValidated.WithLabelValues(rule.Challenge.Algorithm).Inc()
-	lg.Info("challenge validated successfully", "challenge", chall.ID, "method", rule.Challenge.Algorithm)
+	duration := time.Since(start)
+	lg.Info("challenge validated successfully",
+		"challenge", chall.ID,
+		"method", rule.Challenge.Algorithm,
+		"duration", formatDuration(duration))
 	http.Redirect(w, r, redir, http.StatusFound)
+}
+
+// formatDuration formats a duration with appropriate unit (s, ms, or us)
+func formatDuration(d time.Duration) string {
+	us := d.Microseconds()
+	if us >= 1000000 {
+		// >= 1 second, show in seconds
+		return fmt.Sprintf("%.2fs", float64(us)/1000000.0)
+	} else if us >= 1000 {
+		// >= 1 millisecond, show in milliseconds
+		return fmt.Sprintf("%dms", us/1000)
+	}
+	// < 1 millisecond, show in microseconds
+	return fmt.Sprintf("%dus", us)
 }
 
 func cr(name string, rule config.Rule, weight int) policy.CheckResult {
